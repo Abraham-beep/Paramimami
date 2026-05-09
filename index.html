@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Día de las Madres</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;background:linear-gradient(135deg,#fff5f7 0%,#fef0f5 50%,#fff8f0 100%);font-family:'Lato',sans-serif;padding:2rem 1rem;}
+.page{display:grid;grid-template-columns:1fr 2.5fr 1fr;gap:1.5rem;max-width:1100px;margin:0 auto;align-items:start;}
+.side-col{display:flex;flex-direction:column;gap:1rem;}
+.photo-frame{width:100%;aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:3px solid #f9cde0;box-shadow:0 6px 20px rgba(200,100,130,0.15);transition:transform 0.3s;}
+.photo-frame:hover{transform:scale(1.03) rotate(1deg);}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+.center-col{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem 1.5rem;}
+.date-label{font-size:12px;color:#c06080;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.5rem;}
+.main-title{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:600;color:#9b3055;margin-bottom:2rem;}
+.card-center{background:rgba(255,255,255,0.9);border:1.5px solid #f5c8d8;border-radius:22px;padding:2.5rem 2rem;width:100%;box-shadow:0 8px 40px rgba(200,80,120,0.10);position:relative;}
+.open-quote{font-family:'Playfair Display',serif;font-size:5rem;color:#f5c8d8;position:absolute;top:-15px;left:18px;line-height:1;}
+.message-text{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;font-style:italic;color:#5c2040;line-height:1.9;}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#e08098,transparent);margin:1.5rem auto;border-radius:2px;}
+.heart-row{display:flex;gap:10px;justify-content:center;}
+.heart{color:#e06090;font-size:1.3rem;animation:pulse 1.4s ease-in-out infinite;}
+.heart:nth-child(2){animation-delay:0.2s;}
+.heart:nth-child(3){animation-delay:0.4s;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.3);opacity:1;}}
+.bottom-flowers{margin-top:1.5rem;font-size:1.5rem;opacity:0.7;}
+@media(max-width:700px){.page{grid-template-columns:1fr;}.side-col{flex-direction:row;flex-wrap:wrap;}.photo-frame{width:calc(50% - 0.5rem);aspect-ratio:1;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Columna izquierda: 3 fotos -->
+  <div class="side-col">
+    <div class="photo-frame"><img src="foto1.jpg" alt="foto familiar"></div>
+    <div class="photo-frame"><img src="foto2.jpg" alt="foto familiar"></div>
+    <div class="photo-frame"><img src="foto3.jpg" alt="foto familiar"></div>
+  </div>
+
+  <!-- Centro: mensaje -->
+  <div class="center-col">
+    <div style="font-size:2rem;margin-bottom:1rem;">🌸 🌺 🌸</div>
+    <p class="date-label">05 de Mayo · Día Especial</p>
+    <h1 class="main-title">Feliz Día de las Madres</h1>
+    <div class="card-center">
+      <span class="open-quote">"</span>
+      <p class="message-text">
+        Mamá, en este día de las madres, quiero agradecerte por Tu amor incondicional.<br><br>
+        ¡Te quiero mucho!
+      </p>
+      <div class="divider"></div>
+      <div class="heart-row">
+        <span class="heart">♥</span>
+        <span class="heart">♥</span>
+        <span class="heart">♥</span>
+      </div>
+    </div>
+    <div class="bottom-flowers">🌷 🌼 🌷</div>
+  </div>
+
+  <!-- Columna derecha: 3 fotos -->
+  <div class="side-col">
+    <div class="photo-frame"><img src="foto4.jpg" alt="foto familiar"></div>
+    <div class="photo-frame"><img src="foto5.jpg" alt="foto familiar"></div>
+    <div class="photo-frame"><img src="foto6.jpg" alt="foto familiar"></div>
+  </div>
+
+</div>
+</body>
+</html>
