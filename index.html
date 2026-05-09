@@ -13,124 +13,252 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-body{min-height:100vh;background:linear-gradient(135deg,#fff5f7 0%,#fef0f5 50%,#fff8f0 100%);font-family:'Lato',sans-serif;}
 
-/* ── PANTALLA DE BIENVENIDA ── */
+/* ── FONDO ANIMADO ── */
+body{
+  min-height:100vh;
+  font-family:'Lato',sans-serif;
+  background:#1a0010;
+  overflow-x:hidden;
+}
+
+#bg-canvas{
+  position:fixed;inset:0;z-index:0;
+  pointer-events:none;
+}
+
+/* ── LOCK ── */
 #lock-screen{
   position:fixed;inset:0;z-index:100;
-  background:linear-gradient(135deg,#fff0f5,#fde8f0,#fff5f0);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:2rem;text-align:center;
+  padding:1.5rem;text-align:center;
 }
-.lock-flowers{font-size:3rem;margin-bottom:1rem;animation:float 3s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.lock-flowers{font-size:2.8rem;margin-bottom:1rem;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
 .lock-title{
-  font-family:'Playfair Display',serif;font-size:1.8rem;color:#9b3055;
-  margin-bottom:0.5rem;
+  font-family:'Playfair Display',serif;font-size:1.6rem;
+  color:#ffe0f0;margin-bottom:0.5rem;
+  text-shadow:0 0 20px rgba(255,150,200,0.5);
 }
-.lock-subtitle{font-size:0.95rem;color:#c06080;margin-bottom:2rem;line-height:1.6;}
+.lock-subtitle{font-size:0.9rem;color:#ffb8d8;margin-bottom:1.5rem;line-height:1.7;}
 .lock-box{
-  background:white;border:1.5px solid #f5c8d8;border-radius:20px;
-  padding:2rem;max-width:380px;width:100%;
-  box-shadow:0 8px 40px rgba(200,80,120,0.12);
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,180,210,0.3);
+  border-radius:24px;padding:2rem;width:100%;max-width:360px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.lock-box label{display:block;font-size:0.85rem;color:#c06080;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;}
+.lock-box label{display:block;font-size:0.8rem;color:#ffb8d8;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.8rem;}
 .lock-box input{
-  width:100%;padding:0.75rem 1rem;border:1.5px solid #f5c8d8;border-radius:10px;
-  font-size:1rem;font-family:'Lato',sans-serif;color:#5c2040;outline:none;
-  text-align:center;background:#fff9fb;
+  width:100%;padding:0.8rem 1rem;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,180,210,0.4);
+  border-radius:12px;font-size:1.1rem;
+  font-family:'Lato',sans-serif;color:#ffe0f0;
+  outline:none;text-align:center;
 }
-.lock-box input:focus{border-color:#e06090;}
+.lock-box input::placeholder{color:rgba(255,200,220,0.4);}
+.lock-box input:focus{border-color:rgba(255,150,200,0.8);background:rgba(255,255,255,0.12);}
 .lock-btn{
-  margin-top:1.2rem;width:100%;padding:0.85rem;
-  background:linear-gradient(135deg,#e06090,#c04070);
-  color:white;border:none;border-radius:10px;
+  margin-top:1rem;width:100%;padding:0.9rem;
+  background:linear-gradient(135deg,#e06090,#9b1a50);
+  color:white;border:none;border-radius:12px;
   font-size:1rem;font-family:'Lato',sans-serif;cursor:pointer;
+  box-shadow:0 4px 20px rgba(200,50,100,0.4);
   transition:transform 0.2s,box-shadow 0.2s;
 }
-.lock-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(200,60,100,0.3);}
-.lock-error{color:#e04060;font-size:0.85rem;margin-top:0.8rem;min-height:1.2em;}
-.lock-hint{font-size:0.78rem;color:#d0a0b0;margin-top:0.6rem;}
+.lock-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(200,50,100,0.5);}
+.lock-btn:active{transform:scale(0.97);}
+.lock-error{color:#ff8080;font-size:0.85rem;margin-top:0.8rem;min-height:1.2em;}
+.lock-hint{font-size:0.78rem;color:rgba(255,180,210,0.6);margin-top:0.6rem;}
 
 /* ── PÉTALOS FLOTANTES ── */
-.petal{
-  position:fixed;pointer-events:none;font-size:1.4rem;
-  animation:fall linear infinite;opacity:0;z-index:0;
-}
+.petal{position:fixed;pointer-events:none;font-size:1.4rem;animation:fall linear infinite;opacity:0;z-index:1;}
 @keyframes fall{
-  0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
-  100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
+  0%{transform:translateY(-20px) rotate(0deg) scale(1);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg) scale(0.5);opacity:0;}
 }
 
-/* ── PÁGINA PRINCIPAL ── */
-#main-page{display:none;padding:2rem 1rem;}
-.page{display:grid;grid-template-columns:1fr 2.5fr 1fr;gap:1.5rem;max-width:1100px;margin:0 auto;align-items:start;}
-.side-col{display:flex;flex-direction:column;gap:1rem;}
-.photo-frame{width:100%;aspect-ratio:3/4;border-radius:16px;overflow:hidden;border:3px solid #f9cde0;box-shadow:0 6px 20px rgba(200,100,130,0.15);transition:transform 0.3s;}
-.photo-frame:hover{transform:scale(1.03) rotate(1deg);}
-.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;}
-.center-col{display:flex;flex-direction:column;align-items:center;text-align:center;padding:1rem 1.5rem;}
-.date-label{font-size:12px;color:#c06080;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.5rem;}
-.main-title{font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:600;color:#9b3055;margin-bottom:2rem;}
-.card-center{background:rgba(255,255,255,0.9);border:1.5px solid #f5c8d8;border-radius:22px;padding:2.5rem 2rem;width:100%;box-shadow:0 8px 40px rgba(200,80,120,0.10);position:relative;}
-.open-quote{font-family:'Playfair Display',serif;font-size:5rem;color:#f5c8d8;position:absolute;top:-15px;left:18px;line-height:1;}
-.message-text{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-style:italic;color:#5c2040;line-height:2;text-align:left;}
-.message-text .greeting{font-size:1.3rem;font-weight:600;display:block;margin-bottom:1rem;text-align:center;}
-.divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,#e08098,transparent);margin:1.5rem auto;border-radius:2px;}
+/* ── MAIN ── */
+#main-page{display:none;padding:1.5rem 1rem;position:relative;z-index:2;}
+.page{display:flex;flex-direction:column;gap:1.2rem;max-width:500px;margin:0 auto;}
+
+/* Header */
+.header{text-align:center;padding:1rem 0 0.5rem;}
+.header-emojis{font-size:2rem;margin-bottom:0.4rem;}
+.date-label{font-size:11px;color:#ffb8d8;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.4rem;}
+.main-title{
+  font-family:'Playfair Display',Georgia,serif;font-size:1.7rem;font-weight:600;
+  color:#ffe0f0;text-shadow:0 0 30px rgba(255,150,200,0.6);
+}
+.age-badge{
+  display:inline-block;margin-top:0.6rem;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,180,210,0.3);
+  border-radius:50px;padding:0.4rem 1.2rem;
+  font-size:0.8rem;color:#ffb8d8;letter-spacing:1px;
+}
+
+/* Fotos */
+.photos-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
+.photo-frame{
+  width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;
+  border:2px solid rgba(255,180,210,0.3);
+  box-shadow:0 8px 25px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+  cursor:pointer;position:relative;transition:transform 0.25s,box-shadow 0.25s;
+}
+.photo-frame:hover{transform:scale(1.04) translateY(-3px);box-shadow:0 15px 40px rgba(0,0,0,0.5),0 0 20px rgba(255,120,180,0.2);}
+.photo-frame:active{transform:scale(0.97);}
+.photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform 0.4s;}
+.photo-frame:hover img{transform:scale(1.08);}
+.photo-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(100,0,50,0.7) 0%,transparent 55%);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:0.7rem;opacity:0;transition:opacity 0.3s;
+}
+.photo-frame:hover .photo-overlay{opacity:1;}
+.photo-overlay span{color:#ffe0f0;font-size:0.75rem;letter-spacing:1px;}
+
+/* Carta */
+.card-center{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,180,210,0.2);
+  border-radius:24px;padding:2rem 1.5rem 1.5rem;
+  box-shadow:0 20px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative;
+}
+.open-quote{
+  font-family:'Playfair Display',serif;font-size:5rem;
+  color:rgba(255,150,200,0.3);
+  position:absolute;top:-15px;left:16px;line-height:1;
+}
+.message-text{
+  font-family:'Playfair Display',Georgia,serif;font-size:1rem;
+  font-style:italic;color:#ffd0e8;line-height:2;text-align:left;
+}
+.greeting{font-size:1.15rem;font-weight:600;display:block;margin-bottom:1rem;text-align:center;font-style:normal;color:#ffe0f0;}
+.divider{width:50px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,150,200,0.6),transparent);margin:1.2rem auto;}
 .heart-row{display:flex;gap:10px;justify-content:center;}
-.heart{color:#e06090;font-size:1.3rem;animation:pulse 1.4s ease-in-out infinite;}
+.heart{color:#ff80b0;font-size:1.3rem;animation:pulse 1.4s ease-in-out infinite;}
 .heart:nth-child(2){animation-delay:0.2s;}
 .heart:nth-child(3){animation-delay:0.4s;}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:0.8;}50%{transform:scale(1.3);opacity:1;}}
-.bottom-flowers{margin-top:1.5rem;font-size:1.5rem;opacity:0.7;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:0.7;}50%{transform:scale(1.3);opacity:1;}}
+.footer-flowers{text-align:center;font-size:1.4rem;padding:0.5rem 0 1rem;opacity:0.6;}
 
-/* edad badge */
-.age-badge{
-  display:inline-block;margin:0 auto 1.5rem;
-  background:linear-gradient(135deg,#fde8f0,#ffd6e8);
-  border:1.5px solid #f5c8d8;border-radius:50px;
-  padding:0.5rem 1.5rem;
-  font-size:0.85rem;color:#9b3055;letter-spacing:1px;
+/* ── LIGHTBOX ── */
+#lightbox{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(10,0,20,0.95);
+  backdrop-filter:blur(10px);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:1.5rem;
 }
+#lightbox.show{display:flex;animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.lb-img-wrap{
+  position:relative;width:100%;max-width:420px;
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,180,210,0.3);
+  box-shadow:0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(255,100,180,0.15);
+}
+.lb-img-wrap img{width:100%;max-height:52vh;object-fit:cover;display:block;transition:opacity 0.3s;}
+.lb-msg{
+  margin-top:1.2rem;text-align:center;
+  font-family:'Playfair Display',serif;font-style:italic;
+  color:#ffd0e8;font-size:1rem;line-height:1.7;max-width:380px;
+  text-shadow:0 0 20px rgba(255,120,180,0.3);
+}
+.lb-nav{display:flex;gap:1rem;margin-top:1.2rem;}
+.lb-btn{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,180,210,0.3);
+  color:#ffd0e8;padding:0.6rem 1.4rem;border-radius:50px;
+  font-size:1rem;cursor:pointer;transition:background 0.2s;
+  font-family:'Lato',sans-serif;backdrop-filter:blur(5px);
+}
+.lb-btn:hover{background:rgba(255,255,255,0.15);}
+.lb-btn:active{transform:scale(0.96);}
+.lb-close{
+  position:absolute;top:1rem;right:1rem;
+  background:rgba(255,255,255,0.1);border:1px solid rgba(255,180,210,0.3);
+  color:#ffd0e8;font-size:1.2rem;width:42px;height:42px;
+  border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(5px);
+}
+.lb-counter{color:rgba(255,180,210,0.5);font-size:0.8rem;margin-top:0.5rem;letter-spacing:2px;}
 
-@media(max-width:700px){
-  .page{grid-template-columns:1fr;}
-  .side-col{flex-direction:row;flex-wrap:wrap;}
-  .photo-frame{width:calc(50% - 0.5rem);aspect-ratio:1;}
+/* ── DESKTOP ── */
+@media(min-width:768px){
+  .page{display:grid;grid-template-columns:1fr 2.5fr 1fr;gap:1.5rem;max-width:1100px;flex-direction:unset;}
+  .photos-grid{grid-template-columns:1fr;gap:1rem;}
+  .photo-frame{aspect-ratio:3/4;}
+  .main-title{font-size:2rem;}
+  .message-text{font-size:1.05rem;}
+  .greeting{font-size:1.25rem;}
+  .card-center{padding:2.5rem 2rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- PANTALLA LOCK -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- LOCK -->
 <div id="lock-screen">
   <div class="lock-flowers">🌸🌺🌷</div>
   <h1 class="lock-title">Este regalito es especial 💝</h1>
-  <p class="lock-subtitle">Solo la persona correcta puede abrirlo.<br>Ingresa la fecha especial para continuar.</p>
+  <p class="lock-subtitle">Solo la persona correcta puede abrirlo.<br>Ingresa tu fecha especial para continuar.</p>
   <div class="lock-box">
     <label>¿Cuál es tu fecha especial?</label>
-    <input type="text" id="fecha-input" placeholder="DD/MM/AAAA" maxlength="10">
+    <input type="text" id="fecha-input" placeholder="DD/MM/AAAA" maxlength="10" inputmode="numeric">
     <button class="lock-btn" onclick="verificar()">Abrir regalito 💖</button>
     <div class="lock-error" id="error-msg"></div>
     <div class="lock-hint">Pista: es el día que llegaste a este mundo 🌍</div>
   </div>
 </div>
 
-<!-- PÁGINA PRINCIPAL -->
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button class="lb-close" onclick="cerrarLightbox()">✕</button>
+  <div class="lb-img-wrap"><img id="lb-img" src="" alt="foto"></div>
+  <div class="lb-msg" id="lb-msg"></div>
+  <div class="lb-counter" id="lb-counter"></div>
+  <div class="lb-nav">
+    <button class="lb-btn" onclick="cambiarFoto(-1)">← Anterior</button>
+    <button class="lb-btn" onclick="cambiarFoto(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div id="main-page">
   <div class="page">
 
-    <div class="side-col">
-      <div class="photo-frame"><img src="foto1.jpg" alt="foto familiar"></div>
-      <div class="photo-frame"><img src="foto2.jpg" alt="foto familiar"></div>
-      <div class="photo-frame"><img src="foto3.jpg" alt="foto familiar"></div>
+    <div class="photos-grid" id="fotos-left">
+      <div class="photo-frame" onclick="abrirLightbox(0)">
+        <img src="foto1.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
+      <div class="photo-frame" onclick="abrirLightbox(1)">
+        <img src="foto2.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
+      <div class="photo-frame" onclick="abrirLightbox(2)">
+        <img src="foto3.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
     </div>
 
-    <div class="center-col">
-      <div style="font-size:2rem;margin-bottom:0.5rem;">🌸 🌺 🌸</div>
-      <p class="date-label">05 de Mayo · Día Especial</p>
-      <div class="age-badge" id="age-badge">🎂 Cumpleaños: 10 de marzo de 1975</div>
-      <h1 class="main-title">Feliz Día de las Madres</h1>
+    <div>
+      <div class="header">
+        <div class="header-emojis">🌸 🌺 🌸</div>
+        <p class="date-label">05 de Mayo · Día Especial</p>
+        <div class="age-badge" id="age-badge">🎂 Cumpleaños: 10 de marzo de 1975</div>
+        <h1 class="main-title">Feliz Día de las Madres</h1>
+      </div>
       <div class="card-center">
         <span class="open-quote">"</span>
         <p class="message-text">
@@ -147,72 +275,224 @@ body{min-height:100vh;background:linear-gradient(135deg,#fff5f7 0%,#fef0f5 50%,#
           <span class="heart">♥</span>
         </div>
       </div>
-      <div class="bottom-flowers">🌷 🌼 🌷</div>
+      <div class="footer-flowers">🌷 🌼 🌷</div>
     </div>
 
-    <div class="side-col">
-      <div class="photo-frame"><img src="foto4.jpg" alt="foto familiar"></div>
-      <div class="photo-frame"><img src="foto5.jpg" alt="foto familiar"></div>
-      <div class="photo-frame"><img src="foto6.jpg" alt="foto familiar"></div>
+    <div class="photos-grid" id="fotos-right">
+      <div class="photo-frame" onclick="abrirLightbox(3)">
+        <img src="foto4.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
+      <div class="photo-frame" onclick="abrirLightbox(4)">
+        <img src="foto5.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
+      <div class="photo-frame" onclick="abrirLightbox(5)">
+        <img src="foto6.jpg" alt="foto">
+        <div class="photo-overlay"><span>Ver foto 💕</span></div>
+      </div>
     </div>
 
   </div>
 </div>
 
 <script>
-function formatInput(e){
-  let v = e.target.value.replace(/\D/g,'');
-  if(v.length>=3) v = v.slice(0,2)+'/'+v.slice(2);
-  if(v.length>=6) v = v.slice(0,5)+'/'+v.slice(5,9);
-  e.target.value = v;
+/* ══════════════════════════════════
+   FONDO ANIMADO — partículas + ondas
+══════════════════════════════════ */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles=[], t=0;
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function randomBetween(a,b){ return a + Math.random()*(b-a); }
+
+// Partículas brillantes
+for(let i=0;i<80;i++){
+  particles.push({
+    x: randomBetween(0,1),
+    y: randomBetween(0,1),
+    r: randomBetween(0.5,2.5),
+    speed: randomBetween(0.0001,0.0003),
+    offset: randomBetween(0, Math.PI*2),
+    drift: randomBetween(-0.0002,0.0002),
+    alpha: randomBetween(0.2,0.8),
+  });
 }
 
-document.getElementById('fecha-input').addEventListener('input', formatInput);
-document.getElementById('fecha-input').addEventListener('keydown', function(e){
-  if(e.key==='Enter') verificar();
+function drawBg(){
+  // Gradiente de fondo animado
+  const grad = ctx.createRadialGradient(
+    W*0.5 + Math.sin(t*0.3)*W*0.15, H*0.4 + Math.cos(t*0.2)*H*0.1, 0,
+    W*0.5, H*0.5, W*0.9
+  );
+  grad.addColorStop(0,   `hsl(${330+Math.sin(t*0.4)*15}, 60%, 15%)`);
+  grad.addColorStop(0.4, `hsl(${310+Math.cos(t*0.3)*10}, 50%, 8%)`);
+  grad.addColorStop(1,   '#050005');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+
+  // Ondas suaves de color
+  for(let i=0;i<3;i++){
+    const wGrad = ctx.createRadialGradient(
+      W*(0.2+i*0.3)+Math.sin(t*0.2+i)*W*0.1,
+      H*(0.3+i*0.2)+Math.cos(t*0.15+i)*H*0.1,
+      0,
+      W*(0.2+i*0.3), H*(0.3+i*0.2), W*0.35
+    );
+    const hue = 320 + i*20 + Math.sin(t*0.3+i)*15;
+    wGrad.addColorStop(0, `hsla(${hue},70%,35%,0.12)`);
+    wGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = wGrad;
+    ctx.fillRect(0,0,W,H);
+  }
+
+  // Partículas
+  particles.forEach(p=>{
+    p.x += p.drift;
+    if(p.x<0) p.x=1; if(p.x>1) p.x=0;
+    const py = (p.y + t*p.speed) % 1;
+    const pulse = 0.5 + 0.5*Math.sin(t*2+p.offset);
+    const alpha = p.alpha * pulse;
+    ctx.beginPath();
+    ctx.arc(p.x*W, py*H, p.r*(0.8+0.4*pulse), 0, Math.PI*2);
+    ctx.fillStyle = `hsla(${330+pulse*30},80%,80%,${alpha})`;
+    ctx.fill();
+  });
+
+  // Líneas de luz suaves
+  for(let i=0;i<4;i++){
+    const x = W*(0.1+i*0.25) + Math.sin(t*0.1+i*1.5)*W*0.05;
+    const lineGrad = ctx.createLinearGradient(x,0,x,H);
+    lineGrad.addColorStop(0,'transparent');
+    lineGrad.addColorStop(0.4+Math.sin(t*0.2+i)*0.1,`hsla(330,70%,70%,0.04)`);
+    lineGrad.addColorStop(1,'transparent');
+    ctx.fillStyle = lineGrad;
+    ctx.fillRect(x-30,0,60,H);
+  }
+}
+
+function animate(){
+  t += 0.005;
+  drawBg();
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* ══════════════════
+   MENSAJES FOTOS
+══════════════════ */
+const mensajes = [
+  "Cada foto guarda un pedacito de amor que nunca se olvida 🌸",
+  "Los mejores momentos son los que vivimos juntas 💕",
+  "Tu sonrisa es lo más bonito que existe en mi mundo 🌺",
+  "Gracias por cada abrazo, cada risa y cada momento a tu lado 🫂",
+  "Eres la mamá más especial del universo entero 💖",
+  "Contigo todo es mejor, Mita. Te amo muchísimo 🌷"
+];
+const fotos = ['foto1.jpg','foto2.jpg','foto3.jpg','foto4.jpg','foto5.jpg','foto6.jpg'];
+let fotoActual = 0;
+
+function abrirLightbox(i){
+  fotoActual=i; actualizarLightbox();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function cerrarLightbox(){
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow='';
+}
+function cambiarFoto(dir){
+  fotoActual=(fotoActual+dir+fotos.length)%fotos.length;
+  actualizarLightbox();
+}
+function actualizarLightbox(){
+  const img=document.getElementById('lb-img');
+  img.style.opacity='0';
+  setTimeout(()=>{ img.src=fotos[fotoActual]; img.style.opacity='1'; },150);
+  document.getElementById('lb-msg').textContent=mensajes[fotoActual];
+  document.getElementById('lb-counter').textContent=(fotoActual+1)+' de '+fotos.length;
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') cerrarLightbox();
+  if(e.key==='ArrowLeft') cambiarFoto(-1);
+  if(e.key==='ArrowRight') cambiarFoto(1);
+});
+let touchX=0;
+document.getElementById('lightbox').addEventListener('touchstart',e=>{ touchX=e.touches[0].clientX; });
+document.getElementById('lightbox').addEventListener('touchend',e=>{
+  const diff=touchX-e.changedTouches[0].clientX;
+  if(Math.abs(diff)>50) cambiarFoto(diff>0?1:-1);
 });
 
+/* ══════════════════
+   LOCK
+══════════════════ */
+function formatInput(e){
+  let v=e.target.value.replace(/\D/g,'');
+  if(v.length>=3) v=v.slice(0,2)+'/'+v.slice(2);
+  if(v.length>=6) v=v.slice(0,5)+'/'+v.slice(5,9);
+  e.target.value=v;
+}
+document.getElementById('fecha-input').addEventListener('input',formatInput);
+document.getElementById('fecha-input').addEventListener('keydown',function(e){ if(e.key==='Enter') verificar(); });
+
 function verificar(){
-  const val = document.getElementById('fecha-input').value.trim();
-  const correcta = '10/03/1975';
-  const err = document.getElementById('error-msg');
-  if(val === correcta){
-    err.textContent = '';
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('main-page').style.display = 'block';
+  const val=document.getElementById('fecha-input').value.trim();
+  const err=document.getElementById('error-msg');
+  if(val==='10/03/1975'){
+    err.textContent='';
+    document.getElementById('lock-screen').style.display='none';
+    document.getElementById('main-page').style.display='block';
+    if(window.innerWidth<768){
+      const grid=document.createElement('div');
+      grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;';
+      const left=document.getElementById('fotos-left');
+      const right=document.getElementById('fotos-right');
+      [...left.children,...right.children].forEach(f=>grid.appendChild(f.cloneNode(true)));
+      grid.querySelectorAll('.photo-frame').forEach((f,i)=>{ f.onclick=()=>abrirLightbox(i); });
+      left.replaceWith(grid);
+      right.remove();
+    }
     lanzarPetalos();
     calcularEdad();
   } else {
-    err.textContent = '❌ Fecha incorrecta. ¡Inténtalo de nuevo!';
-    document.getElementById('fecha-input').value = '';
-    document.getElementById('fecha-input').style.borderColor = '#e04060';
-    setTimeout(()=>{ document.getElementById('fecha-input').style.borderColor = '#f5c8d8'; }, 1500);
+    err.textContent='❌ Fecha incorrecta. ¡Inténtalo de nuevo!';
+    document.getElementById('fecha-input').value='';
+    document.getElementById('fecha-input').style.borderColor='rgba(255,80,80,0.6)';
+    setTimeout(()=>{ document.getElementById('fecha-input').style.borderColor='rgba(255,180,210,0.4)'; },1500);
   }
 }
 
 function calcularEdad(){
-  const hoy = new Date();
-  const nac = new Date(1975, 2, 10);
-  let edad = hoy.getFullYear() - nac.getFullYear();
-  const m = hoy.getMonth() - nac.getMonth();
-  if(m < 0 || (m===0 && hoy.getDate() < nac.getDate())) edad--;
-  document.getElementById('age-badge').textContent = '🎂 ' + edad + ' años de pura vida y amor';
+  const hoy=new Date(), nac=new Date(1975,2,10);
+  let edad=hoy.getFullYear()-nac.getFullYear();
+  const m=hoy.getMonth()-nac.getMonth();
+  if(m<0||(m===0&&hoy.getDate()<nac.getDate())) edad--;
+  document.getElementById('age-badge').textContent='🎂 '+edad+' años de pura vida y amor';
 }
 
 function lanzarPetalos(){
-  const emojis = ['🌸','🌺','🌷','💕','✨','🌼','💖'];
-  for(let i=0;i<18;i++){
+  const emojis=['🌸','🌺','🌷','💕','✨','🌼','💖','⭐'];
+  for(let i=0;i<25;i++){
     setTimeout(()=>{
-      const p = document.createElement('div');
-      p.className = 'petal';
-      p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-      p.style.left = Math.random()*100+'vw';
-      p.style.fontSize = (1+Math.random()*1.5)+'rem';
-      p.style.animationDuration = (3+Math.random()*4)+'s';
-      p.style.animationDelay = (Math.random()*2)+'s';
+      const p=document.createElement('div');
+      p.className='petal';
+      p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+      p.style.left=Math.random()*100+'vw';
+      p.style.fontSize=(1+Math.random()*1.8)+'rem';
+      p.style.animationDuration=(4+Math.random()*5)+'s';
+      p.style.animationDelay=(Math.random()*2)+'s';
       document.body.appendChild(p);
-      setTimeout(()=>p.remove(), 8000);
-    }, i*200);
+      setTimeout(()=>p.remove(),9000);
+    },i*120);
   }
 }
 </script>
